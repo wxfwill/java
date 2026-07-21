@@ -1,6 +1,6 @@
 # Java 全栈学习仓库交接文档
 
-更新时间：2026-07-21
+更新时间：2026-07-21 15:25
 
 ## 当前目标
 
@@ -92,27 +92,18 @@ git -C D:\code\java remote -v
 - 已确认 `D:\code\mframe` 没有生成 Java 学习目录或相关变更。
 - 已使用 XML 解析验证第一阶段 `pom.xml` 格式正确。
 - 已检查 Markdown、Java、XML 文件，没有 UTF-8 BOM。
-- 已尝试执行 Maven 测试，但本机没有 `mvn` 命令，因此未进入编译和测试阶段。
+- 已安装 JDK 21 到 `D:\devtools\jdk\temurin-21`。
+- 已安装 Maven 3.9.16 到 `D:\devtools\maven\apache-maven-3.9.16`。
+- 已将 Maven 本地依赖仓库配置到 `D:\devtools\maven\repository`。
+- 已执行 `mvn test`、`mvn package` 和 JAR 运行验证，第一阶段最小骨架通过。
 
 ## 当前阻塞与风险
 
-### 未安装 Java 环境
+### 环境注意事项
 
-当前 PowerShell 无法识别：
+JDK 与 Maven 已写入用户级环境变量。已打开的旧终端可能仍无法识别 `java`、`javac` 或 `mvn`，需要新开 PowerShell 或手动刷新当前会话的 `Path`。
 
-```text
-java
-javac
-mvn
-```
-
-因此以下内容尚未验证：
-
-- Java 21 编译
-- JUnit 5 测试执行
-- Maven 依赖下载
-- JAR 打包
-- `App` 运行
+首次 Maven 执行曾在默认位置 `C:\Users\weixf\.m2\repository` 留下约 11 MB 部分缓存，已移动到 `D:\devtools\maven\legacy-c-m2-repository-20260721`，后续 Maven 已切换到 `D:\devtools\maven\repository`。
 
 ### GitHub 网络
 
@@ -126,9 +117,9 @@ mvn
 
 ## 下一步计划
 
-### 1. 安装并验证 JDK 21
+### 1. 重新验证 JDK 21 和 Maven
 
-安装完成后执行：
+新开 PowerShell 后执行：
 
 ```powershell
 java -version
@@ -136,19 +127,9 @@ javac -version
 $env:JAVA_HOME
 ```
 
-确保 Java 主版本为 21，并确认新的 PowerShell 会话能识别命令。
+确保 Java 主版本为 21，Maven home 为 `D:\devtools\maven\apache-maven-3.9.16`，Java home 为 `D:\devtools\jdk\temurin-21`。
 
-### 2. 安装并验证 Maven
-
-执行：
-
-```powershell
-mvn -version
-```
-
-确认 Maven 使用的 Java Home 指向 JDK 21，而不是旧 JRE 或其他 JDK。
-
-### 3. 执行第一阶段最小构建
+### 2. 重放第一阶段最小构建
 
 ```powershell
 Set-Location D:\code\java\exercises\phase-01-java-basics
@@ -163,11 +144,11 @@ java -cp target\phase-01-java-basics-0.1.0-SNAPSHOT.jar com.wxfwill.learning.App
 Phase 01 Java basics workspace is ready.
 ```
 
-如果 Maven 下载依赖失败，先保留完整错误、仓库地址和代理信息，不要立即切换大量镜像或修改 POM。
+该验证已通过一次。后续如果 Maven 下载依赖失败，先保留完整错误、仓库地址和代理信息，不要立即切换大量镜像或修改 POM。
 
-### 4. 完成首次提交
+### 3. 完成首次提交
 
-只有构建通过并检查 diff 后再提交：
+构建已通过，检查 diff 后再提交：
 
 ```powershell
 git -C D:\code\java status --short
@@ -178,7 +159,7 @@ git -C D:\code\java commit -m "chore: initialize Java full-stack learning worksp
 
 提交前必须确认没有本机路径、密码、Token、Cookie、代理凭据或公司内部敏感配置。
 
-### 5. 推送远端
+### 4. 推送远端
 
 ```powershell
 git -C D:\code\java push -u origin main
@@ -186,7 +167,7 @@ git -C D:\code\java push -u origin main
 
 若仍然无法连接 GitHub，优先核对当前网络或 Git 代理；不要重复 `git init`，也不要重新添加不同远端覆盖当前配置。
 
-### 6. 开始第 1 周学习
+### 5. 开始第 1 周学习
 
 - 在 `progress/48-week-checklist.md` 填写开始日期和固定学习时段。
 - 阅读 `roadmap/phase-01-java-basics.md`。
@@ -198,7 +179,7 @@ git -C D:\code\java push -u origin main
 
 - 不要把 Java 学习文件写入 `D:\code\mframe`。
 - 不要覆盖或修改 `D:\code\mframe\HANDOFF.md`。
-- 不要在未安装 JDK/Maven 时声称构建通过。
+- 不要在未验证新终端环境变量时误判 JDK/Maven 安装失败。
 - 不要在第一阶段让 AI 生成完整权限菜单程序和 20 个测试答案。
 - 不要跳过 Java、SQL 和事务基础直接创建大型 Spring Boot 项目。
 - 不要把所有后续阶段一次性实现出来。
@@ -207,8 +188,7 @@ git -C D:\code\java push -u origin main
 
 ## 下一会话优先确认
 
-1. JDK 21 是否已经安装并正确配置 `JAVA_HOME`。
-2. Maven 是否使用 JDK 21。
-3. 第一阶段 `mvn test` 与 `mvn package` 是否通过。
-4. GitHub 网络与认证是否允许首次推送。
-5. 首次提交前仓库是否只包含预期学习文件。
+1. 新 PowerShell 是否能直接识别 `java`、`javac` 和 `mvn`。
+2. GitHub 网络与认证是否允许首次推送。
+3. 首次提交前仓库是否只包含预期学习文件。
+4. 是否需要保留或删除 `D:\devtools\maven\legacy-c-m2-repository-20260721` 中的 Maven 旧缓存备份。

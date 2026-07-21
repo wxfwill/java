@@ -7,7 +7,7 @@
 - Git 仓库：已初始化，默认分支为 `main`
 - 远端：`origin` 指向 `https://github.com/wxfwill/java.git`
 - 当前阶段：阶段一，Java 语言与工程基础
-- 本机环境：尚未检测到 JDK 与 Maven
+- 本机环境：已安装 JDK 21 与 Maven 3.9.16，均放在 D 盘
 - 主线目标：独立完成企业权限与业务管理平台
 
 ## 目录说明
@@ -28,9 +28,10 @@ infrastructure/                   MySQL、Redis、Nginx、Compose 配置入口
 
 ## 环境准备
 
-1. 安装 JDK 21，并配置 `JAVA_HOME`。
-2. 安装 Maven 3.9.x，并将 `bin` 加入 `PATH`。
-3. 验证环境：
+1. 当前 JDK 安装目录：`D:\devtools\jdk\temurin-21`。
+2. 当前 Maven 安装目录：`D:\devtools\maven\apache-maven-3.9.16`。
+3. Maven 本地依赖仓库：`D:\devtools\maven\repository`。
+4. 验证环境：
 
 ```powershell
 java -version
